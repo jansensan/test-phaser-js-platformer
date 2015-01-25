@@ -6,6 +6,12 @@ function Bub(game) {
       VELOCITY = 96,
       DRAG = 480,
       JUMP_IMPULSE = -256;
+  var Animation = {
+    IDLE: 'idle',
+    WALKING: 'walking',
+    JUMPING: 'jumping',
+    FALLING: 'falling'
+  };
 
   // vars
   var _game = game,
@@ -35,10 +41,10 @@ function Bub(game) {
     _sprite = _game.add.sprite(_game.world.centerX, _game.world.centerY, SPRITE_NAME);
 
     // add anims
-    _sprite.animations.add('idle', [0]);
-    _sprite.animations.add('walking', [0, 1, 2, 3, 4, 5], 12, true);
-    _sprite.animations.add('jumping', [6]);
-    _sprite.animations.add('falling', [7, 8], 8, true);
+    _sprite.animations.add(Animation.IDLE, [0]);
+    _sprite.animations.add(Animation.WALKING, [0, 1, 2, 3, 4, 5], 12, true);
+    _sprite.animations.add(Animation.JUMPING, [6]);
+    _sprite.animations.add(Animation.FALLING, [7, 8], 8, true);
 
     // set anchor
     _sprite.anchor.setTo(0.5, 1);
@@ -66,7 +72,7 @@ function Bub(game) {
       }
 
     } else {
-      _sprite.animations.play('idle');
+      _sprite.animations.play(Animation.IDLE);
       _sprite.animations.stop();
       setWalkingState(false);
     }
@@ -116,16 +122,16 @@ function Bub(game) {
 
   function setAnim() {
     if(_isJumping) {
-      _sprite.animations.play('jumping');
+      _sprite.animations.play(Animation.JUMPING);
 
     } else if (_isFalling) {
-      _sprite.animations.play('falling');
+      _sprite.animations.play(Animation.FALLING);
     
     } else if(_isWalking) {
-      _sprite.animations.play('walking');
+      _sprite.animations.play(Animation.WALKING);
 
     } else {
-      _sprite.animations.play('idle');
+      _sprite.animations.play(Animation.IDLE);
     }
   }
 

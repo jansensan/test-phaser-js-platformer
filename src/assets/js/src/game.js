@@ -3,11 +3,13 @@ var TILE_SIZE = 16,
     NUM_COLUMNS = 40,
     NUM_ROWS = 23,
     GAME_WIDTH = NUM_COLUMNS * TILE_SIZE, // 640
-    GAME_HEIGHT = NUM_ROWS * TILE_SIZE; // 368
+    GAME_HEIGHT = NUM_ROWS * TILE_SIZE, // 368
+    GRAVITY = 512;
 
 // vars
 var _game = null,
-    _bub = null;
+    _bub = null,
+    _keyboardInput = null;
 
 
 // init
@@ -40,19 +42,22 @@ function create() {
   // start physics engine
   _game.physics.startSystem(Phaser.Physics.ARCADE);
 
+  // set references
+  _keyboardInput = _game.input.keyboard;
+
   // init sprite
   _bub.init();
   _game.physics.enable(_bub.getSprite(), Phaser.Physics.ARCADE);
   _bub.setPhysics();
 
   // set physics engine's gravity.
-  _game.physics.arcade.gravity.y = 512;
+  _game.physics.arcade.gravity.y = GRAVITY;
 }
 
 function update() {
   _bub.update(
-    _game.input.keyboard.isDown(Phaser.Keyboard.LEFT),
-    _game.input.keyboard.isDown(Phaser.Keyboard.RIGHT),
-    _game.input.keyboard.isDown(Phaser.Keyboard.X)
+    _keyboardInput.isDown(Phaser.Keyboard.LEFT),
+    _keyboardInput.isDown(Phaser.Keyboard.RIGHT),
+    _keyboardInput.isDown(Phaser.Keyboard.X)
   );
 }

@@ -5,7 +5,7 @@ function Bub(game) {
       SPRITESHEET_PATH = 'assets/images/sprites/bub-spritesheet.png',
       VELOCITY = 96,
       DRAG = 480,
-      JUMP_IMPULSE = -256;
+      JUMP_IMPULSE = -272;
   var Animation = {
     IDLE: 'idle',
     WALKING: 'walking',
@@ -53,6 +53,7 @@ function Bub(game) {
   function setPhysics() {
     _sprite.body.collideWorldBounds = true;
     _sprite.body.drag.x = DRAG;
+    _sprite.body.setSize(16, 16, 0, 0);
   }
 
   function update(isLeftDown, isRightDown, isJumpDown) {

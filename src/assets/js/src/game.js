@@ -8,9 +8,6 @@ var TILE_SIZE = 16,
 // vars
 var _game = null,
     _bub = null;
-    // _bg = null,
-    // _layer = null,
-    // _map = null;
 
 
 // init
@@ -36,27 +33,12 @@ function init() {
 
 
 function preload() {
-  // preload tilemap and tileset
-  // _game.load.tilemap('level-01', 'assets/tilemaps/level-01.json', null, Phaser.Tilemap.TILED_JSON);
-  // _game.load.image('tileset', 'assets/images/tilesets/tileset.png');
-
-  // preload sprite
   _bub.preload();
 }
 
 function create() {
   // start physics engine
   _game.physics.startSystem(Phaser.Physics.ARCADE);
-
-  // _bg = _game.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, 'background');
-  // _bg.fixedToCamera = true;
-
-  // _map = _game.add.tilemap('level-01');
-  // _map.addTilesetImage('tileset');
-  // _map.setCollisionByIndex(1);
-
-  // _layer = _map.createLayer('Tile Layer');
-  // _layer.resizeWorld();
 
   // init sprite
   _bub.init();

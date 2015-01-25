@@ -74,7 +74,7 @@ function create() {
   _layer.resizeWorld();
   // _layer.debug = true;
 
-   // set references
+  // set references
   _keyboardInput = _game.input.keyboard;
 
   // init sprite

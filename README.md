@@ -1,1 +1,1 @@
-# test-phaser-js-platformer
+# Phaser JS Platformer

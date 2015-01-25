@@ -1,0 +1,8 @@
+{
+  "name": "test-phaser-js-platformer",
+  "version": "0.0.1",
+  "dependencies": {
+    "phaser": "2.2.2"
+  },
+  "devDependencies": {}
+}

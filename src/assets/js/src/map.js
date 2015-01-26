@@ -3,7 +3,12 @@ function Map(game) {
   var MAP_NAME = 'Level 01',
       Tilesets = {
         TILES: 'Bubble Bobble Tileset',
-        COLLISION: 'COLLISION'
+        COLLISION: 'Collision Tileset'
+      },
+      AssetsPaths = {
+        TILEMAP: 'assets/tilemaps/level-01.json',
+        TILES: 'assets/images/tilesets/tileset.png',
+        COLLISION: 'assets/images/tilesets/collision.png'
       };
 
 
@@ -12,6 +17,8 @@ function Map(game) {
 
       // map objects
       _map = null,
+      _mainTileset = null,
+      _collisionTileset = null,
       _tilesLayer = null,
       _collisionLayer = null;
 
@@ -25,10 +32,14 @@ function Map(game) {
 
   // private methods
   function preload() {
-    // preload tilemap and tileset
-    _game.load.tilemap(MAP_NAME, 'assets/tilemaps/level-01.json', null, Phaser.Tilemap.TILED_JSON);
-    _game.load.image(Tilesets.TILES, 'assets/images/tilesets/tileset.png');
-    // _game.load.image(Tilesets.COLLISION, 'assets/images/tilesets/collision.png');
+    _game.load.tilemap(
+      MAP_NAME,
+      AssetsPaths.TILEMAP,
+      null,
+      Phaser.Tilemap.TILED_JSON
+    );
+    _game.load.image(Tilesets.TILES, AssetsPaths.TILES);
+    _game.load.image(Tilesets.COLLISION, AssetsPaths.COLLISION);
   }
 
 
@@ -38,20 +49,25 @@ function Map(game) {
 
     // add tileset image with name given in tile editor 
     _map.addTilesetImage(Tilesets.TILES);
+    _map.addTilesetImage(Tilesets.COLLISION);
 
     // set collision
     _map.setCollisionByExclusion([0]);
 
-    // create layer with map name given in tile editor
-    _tilesLayer = _map.createLayer(MAP_NAME);
+    // create layers, assign them an index
+    _tilesLayer = _map.createLayer(0);
+    _collisionLayer = _map.createLayer(1);
 
     _tilesLayer.resizeWorld();
     // _tilesLayer.debug = true;
+    _collisionLayer.resizeWorld();
+    // _collisionLayer.debug = true;
   }
 
 
   function getTilesLayer() {
     return _tilesLayer;
+    // return _collisionLayer;
   }
 
 

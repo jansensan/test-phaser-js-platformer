@@ -51,23 +51,46 @@ function Map(game) {
     _map.addTilesetImage(Tilesets.TILES);
     _map.addTilesetImage(Tilesets.COLLISION);
 
-    // set collision
-    _map.setCollisionByExclusion([0]);
-
     // create layers, assign them an index
     _tilesLayer = _map.createLayer(0);
     _collisionLayer = _map.createLayer(1);
+    _collisionLayer.alpha = 0;
+
+    // set basic collision
+    _map.setCollisionByExclusion([0]);
+    
+    // manually set directional collision
+    var i = 0, j = 0, collisionTile, targetTile, collisions;
+    for(i = 0; i < 23; i++) {
+      for(j = 0; j < 40; j++) {
+        collisionTile = _collisionLayer.layer.data[i][j];
+        targetTile = _tilesLayer.layer.data[i][j];
+        if(collisionTile.index > 0) {
+          // set collision blocks
+          if(collisionTile.properties.collisions === 'true') {
+            targetTile.collideDown = true;
+            targetTile.collideLeft = true;
+            targetTile.collideRight = true;
+            targetTile.collideUp = true;
+          // set directional collision
+          } else {
+            collisions = collisionTile.properties.collisions.split(',');
+            targetTile.collideDown = collisions[0] === 'false';
+            targetTile.collideRight = collisions[1] === 'false';
+            targetTile.collideUp = collisions[2] === 'false';
+            targetTile.collideLeft = collisions[3] === 'false';
+          }
+        }
+      }
+    }
 
     _tilesLayer.resizeWorld();
-    // _tilesLayer.debug = true;
     _collisionLayer.resizeWorld();
-    // _collisionLayer.debug = true;
   }
 
 
   function getTilesLayer() {
     return _tilesLayer;
-    // return _collisionLayer;
   }
 
 

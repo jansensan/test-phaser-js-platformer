@@ -76,9 +76,9 @@ function Map(game) {
           } else {
             collisions = collisionTile.properties.collisions.split(',');
             targetTile.collideDown = collisions[0] === 'false';
-            targetTile.collideRight = collisions[1] === 'false';
+            targetTile.collideRight = collisions[1] === 'true';
             targetTile.collideUp = collisions[2] === 'false';
-            targetTile.collideLeft = collisions[3] === 'false';
+            targetTile.collideLeft = collisions[3] === 'true';
           }
         }
       }

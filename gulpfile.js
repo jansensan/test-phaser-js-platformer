@@ -11,7 +11,7 @@ requireDir('./lib/tasks', {recurse: true});
  *  Main Tasks
  */
 gulp.task('build', ['dev:build']);
-gulp.task('serve', ['serve:dev']);
+gulp.task('dev', ['serve:dev']);
 
 
 /**

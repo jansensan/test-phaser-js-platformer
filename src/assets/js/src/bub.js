@@ -13,6 +13,7 @@ function Bub(game) {
     FALLING: 'falling'
   };
 
+
   // vars
   var _game = game,
       _sprite = null,
@@ -37,8 +38,12 @@ function Bub(game) {
     _game.load.spritesheet(SPRITE_NAME, SPRITESHEET_PATH, 24, 24, 9);
   }
 
-  function init() {
-    _sprite = _game.add.sprite(_game.world.centerX, _game.world.centerY, SPRITE_NAME);
+  function init(position) {
+    _sprite = _game.add.sprite(
+      position.x,
+      position.y,
+      SPRITE_NAME
+    );
 
     // add anims
     _sprite.animations.add(Animation.IDLE, [0]);

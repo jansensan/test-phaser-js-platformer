@@ -105,11 +105,32 @@ function create() {
 }
 
 function update() {
-  // update collision
+  // player collision with map
   _game.physics.arcade.collide(
     _bub.getSprite(),
     _map.getTilesLayer()
   );
+
+  // player collision with enemies
+  if(!_bub.isInvincible()) {
+    _game.physics.arcade.collide(
+      _bub.getSprite(),
+      _zenChan01.getSprite(),
+      _bub.onCollidedWithEnemy
+    );
+    _game.physics.arcade.collide(
+      _bub.getSprite(),
+      _zenChan02.getSprite(),
+      _bub.onCollidedWithEnemy
+    );
+    _game.physics.arcade.collide(
+      _bub.getSprite(),
+      _zenChan03.getSprite(),
+      _bub.onCollidedWithEnemy
+    );
+  }
+
+  // enemy collision with map
   _game.physics.arcade.collide(
     _zenChan01.getSprite(),
     _map.getTilesLayer()
@@ -130,6 +151,7 @@ function update() {
     _keyboardInput.isDown(Phaser.Keyboard.X)
   );
 
+  // update enemy sprites
   _zenChan01.update();
   _zenChan02.update();
   _zenChan03.update();

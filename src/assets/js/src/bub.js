@@ -5,7 +5,8 @@ function Bub(game) {
       SPRITESHEET_PATH = 'assets/images/sprites/bub-spritesheet.png',
       VELOCITY = 96,
       DRAG = 480,
-      JUMP_IMPULSE = -272;
+      JUMP_IMPULSE = -272,
+      INVINCIBILITY_DURATION = 3000;
   var Animation = {
     IDLE: 'idle',
     WALKING: 'walking',
@@ -17,6 +18,9 @@ function Bub(game) {
   // vars
   var _game = game,
       _sprite = null,
+      _initialPosition = null,
+      _invincibilityTimer = null,
+      _isInvincible = false,
       _isIdle = false,
       _isWalking = false,
       _isJumping = false,
@@ -31,6 +35,8 @@ function Bub(game) {
       _class.setPhysics = setPhysics;
       _class.update = update;
       _class.getSprite = getSprite;
+      _class.isInvincible = isInvincible;
+      _class.onCollidedWithEnemy = onCollidedWithEnemy;
 
 
   // private methods
@@ -39,11 +45,14 @@ function Bub(game) {
   }
 
   function init(position) {
+    _initialPosition = position;
+
     _sprite = _game.add.sprite(
-      position.x,
-      position.y,
+      _initialPosition.x,
+      _initialPosition.y,
       SPRITE_NAME
     );
+    setInvincibility();
 
     // add anims
     _sprite.animations.add(Animation.IDLE, [0]);
@@ -141,10 +150,52 @@ function Bub(game) {
     }
   }
 
+  function setInvincibility() {
+    _sprite.alpha = 0.5;
+    _isInvincible = true;
+    _invincibilityTimer = setTimeout(onInvincibilityTimedOut, INVINCIBILITY_DURATION);
+  }
+
+  function removeInvincibility() {
+    clearInvincibilityTimer();
+    _isInvincible = false;
+    _sprite.alpha = 1;
+  }
+
+  function clearInvincibilityTimer() {
+    clearTimeout(_invincibilityTimer);
+    _invincibilityTimer = null;
+  }
+
+  function resurrect() {
+    setInvincibility();
+    _sprite.x = _initialPosition.x;
+    _sprite.y = _initialPosition.y;
+  }
+
+  function die() {
+    // TODO: remove collision and animate
+    resurrect();
+  }
+
+
+  // event handlers
+  function onInvincibilityTimedOut() {
+    removeInvincibility();
+  }
+
+  function onCollidedWithEnemy() {
+    die();
+  }
+
 
   // getters
   function getSprite() {
     return _sprite;
+  }
+
+  function isInvincible() {
+    return _isInvincible;
   }
 
 

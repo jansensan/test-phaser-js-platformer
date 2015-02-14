@@ -63,8 +63,6 @@ function ZenChan(game) {
     _sprite.body.collideWorldBounds = true;
     _sprite.body.drag.x = DRAG;
     _sprite.body.setSize(16, 16, 0, 0);
-
-    // console.log('_sprite.body.touching: ', _sprite.body.touching);
   }
 
   function update() {

@@ -4,7 +4,9 @@ function ZenChan(game) {
       SPRITESHEET_PATH = 'assets/images/sprites/zen-chan-spritesheet.png',
       VELOCITY = 64,
       DRAG = 480,
-      JUMP_IMPULSE = -272;
+      JUMP_IMPULSE = -272,
+      PAUSE_DURATION = 800;
+      AWARENESS_DURATION = 5200;
   var Animation = {
     WALKING: 'walking',
     JUMPING: 'jumping',
@@ -18,8 +20,11 @@ function ZenChan(game) {
       _velocity = 0,
       _direction = 1,
       _player = null,
+      _pauseTimer = null,
+      _awarenessTimer = null,
       _isWalking = false,
       _isJumping = false,
+      _didJump = false,
       _isFalling = false;
 
 
@@ -66,9 +71,7 @@ function ZenChan(game) {
   }
 
   function update() {
-    if(_sprite.body.velocity.x === 0 && !_isJumping && !_isFalling) {
-      setDirectionRelativeToPlayer();
-    }
+    lookForPlayerHorizontally();
 
     _sprite.body.velocity.x = _direction * _velocity;
     _sprite.scale.x = _direction;
@@ -116,15 +119,82 @@ function ZenChan(game) {
     _direction = (_player.body.x < _sprite.body.x) ? -1 : 1;
   }
 
-  function reverseDirection() {
-    _direction *= -1;
+  function lookForPlayerHorizontally() {
+    if(_sprite.body.velocity.x === 0 && !_isJumping && !_isFalling) {
+      setDirectionRelativeToPlayer();
+      startAwarenessTimer();
+    }
+  }
+
+  function lookForPlayerVertically() {
+    var willJump = false;
+
+    // zen chan has been wandering around without collision for a while
+    // check if player is higher, jump if so
+    if(_player.body.y < _sprite.body.y) {
+      willJump = true;
+      _sprite.body.velocity.x = 0;
+      jump();
+    }
+
+    return willJump;
+  }
+
+  function startAwarenessTimer() {
+    clearAwarenessTimer();
+    _awarenessTimer = setTimeout(onAwarenessTimedOut, AWARENESS_DURATION);
+  }
+
+  function clearAwarenessTimer() {
+    clearTimeout(_awarenessTimer);
+    _awarenessTimer = null;
+  }
+
+  function startPauseTimer() {
+    clearPauseTimer();
+    _pauseTimer = setTimeout(onPauseTimedOut, PAUSE_DURATION);
+  }
+
+  function clearPauseTimer() {
+    clearTimeout(_pauseTimer);
+    _pauseTimer = null;
+  }
+
+  function jump() {
+    // if body is not in air
+    // and if player is not holding jump key
+    if(_sprite.body.onFloor()) {
+      // apply impulse
+      _sprite.body.velocity.y = JUMP_IMPULSE;
+      _didJump = true;
+    }
   }
 
 
   // event handlers
   function onCollidedWithFloor() {
-    setDirectionRelativeToPlayer();
-    _velocity = VELOCITY;
+    if(_didJump) {
+      _didJump = false;
+      startPauseTimer();
+
+    } else {
+      setDirectionRelativeToPlayer();
+      _velocity = VELOCITY;
+    }
+  }
+
+  function onAwarenessTimedOut() {
+    clearAwarenessTimer();
+    lookForPlayerVertically();
+  }
+
+  function onPauseTimedOut() {
+    clearPauseTimer();
+    var willJump = lookForPlayerVertically();
+    if(!willJump) {
+      setDirectionRelativeToPlayer();
+      _velocity = VELOCITY;
+    }
   }
 
 
